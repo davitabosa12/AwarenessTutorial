@@ -12,16 +12,7 @@ import com.google.android.gms.awareness.fence.FenceState;
 public class VibrateAction extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        int state = FenceState.extract(intent).getCurrentState();
-        switch(state){
-            case FenceState.TRUE:
-                vibrate(context);
-                break;
-            case FenceState.FALSE:
-                break;
-            case FenceState.UNKNOWN:
-                break;
-        }
+       
     }
 
     public void vibrate(Context context) {

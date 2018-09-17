@@ -17,16 +17,7 @@ import great.ufc.br.awarenessclass.R;
 public class NotificationAction extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        int state = FenceState.extract(intent).getCurrentState();
-        switch(state){
-            case FenceState.TRUE:
-                pushNotification(context);
-                break;
-            case FenceState.FALSE:
-                break;
-            case FenceState.UNKNOWN:
-                break;
-        }
+
     }
 
     public void pushNotification(Context context){
