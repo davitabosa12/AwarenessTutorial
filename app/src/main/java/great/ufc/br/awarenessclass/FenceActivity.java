@@ -15,6 +15,7 @@ import com.google.android.gms.awareness.fence.HeadphoneFence;
 import com.google.android.gms.awareness.state.HeadphoneState;
 
 import great.ufc.br.awarenessclass.actions.NotificationAction;
+import great.ufc.br.awarenessclass.actions.ToastAction;
 import great.ufc.br.awarenessclass.actions.VibrateAction;
 
 public class FenceActivity extends AppCompatActivity {
@@ -25,14 +26,16 @@ public class FenceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fence);
 
         //Criar as AwarenessFences
+        AwarenessFence headphone = HeadphoneFence.during(HeadphoneState.PLUGGED_IN);
 
         //Filtros de Intent
-
+        IntentFilter hp = new IntentFilter("headphone");
         //Registrar Receivers (actions) na pilha do Android
-
+        registerReceiver(new VibrateAction(), hp);
         //Registrar PendingIntents getBroadcast com os filtros criados
-
+        PendingIntent pi = PendingIntent.getBroadcast(this,123,new Intent("headphone"),PendingIntent.FLAG_CANCEL_CURRENT);
         //Registro de Fences no Google Awareness API
-
+        FenceClient fc = Awareness.getFenceClient(this);
+        fc.updateFences(new FenceUpdateRequest.Builder().addFence("Headphone",headphone,pi).build());
     }
 }
