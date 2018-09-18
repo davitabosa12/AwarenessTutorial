@@ -24,13 +24,15 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class MainActivity extends AppCompatActivity {
 
-
+Button btnSnapshot;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("AwarenessClass");
         Button btn = findViewById(R.id.btn_fence);
+        btnSnapshot = findViewById(R.id.btn_snapshot);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +49,13 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             //Inicie o snapshot
-            startSnapshot();
+
+            btnSnapshot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startSnapshot();
+                }
+            });
         }
 
 
@@ -58,8 +66,14 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 123){
-            if(grantResults[0] == PERMISSION_GRANTED)
-                startSnapshot();
+            if(grantResults[0] == PERMISSION_GRANTED) {
+                btnSnapshot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startSnapshot();
+                    }
+                });
+            }
             else
                 Toast.makeText(this, "Aceite as permissoes.", Toast.LENGTH_SHORT).show();
         }
@@ -79,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void startSnapshotPlaces(){
-
+    private void startSnapshotHeadphone(){
+        //criem um snapshot de headphone!
+        //olhem a colinha acima :)
     }
 }

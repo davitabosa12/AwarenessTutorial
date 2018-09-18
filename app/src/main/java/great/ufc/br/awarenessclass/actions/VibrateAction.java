@@ -12,7 +12,7 @@ import com.google.android.gms.awareness.fence.FenceState;
 public class VibrateAction extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-       vibrate(context);
+
     }
 
     public void vibrate(Context context) {

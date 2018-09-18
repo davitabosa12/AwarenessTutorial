@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.os.VibrationEffect;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -17,7 +18,9 @@ import great.ufc.br.awarenessclass.R;
 public class NotificationAction extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        int state = FenceState.extract(intent).getCurrentState();
+        if(state == FenceState.TRUE)
+            pushNotification(context);
     }
 
     public void pushNotification(Context context){
@@ -25,7 +28,8 @@ public class NotificationAction extends BroadcastReceiver {
         builder.setSmallIcon(R.mipmap.ic_launcher_round);
         builder.setContentTitle("Awareness Tutorial");
         builder.setTicker("Mudanca de contexto detectada");
-        builder.setContentText("Mudanca de contexto");
+        builder.setContentText("Você está andando com headphones!");
+
         Notification not = builder.build();
         NotificationManagerCompat manager = NotificationManagerCompat.from(context);
         manager.notify(123,not);

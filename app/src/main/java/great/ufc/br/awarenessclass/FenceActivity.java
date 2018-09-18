@@ -31,7 +31,7 @@ public class FenceActivity extends AppCompatActivity {
         //Filtros de Intent
         IntentFilter hp = new IntentFilter("headphone");
         //Registrar Receivers (actions) na pilha do Android
-        registerReceiver(new VibrateAction(), hp);
+        registerReceiver(new ToastAction(), hp);
         //Registrar PendingIntents getBroadcast com os filtros criados
         PendingIntent pi = PendingIntent.getBroadcast(this,123,new Intent("headphone"),PendingIntent.FLAG_CANCEL_CURRENT);
         //Registro de Fences no Google Awareness API
