@@ -12,19 +12,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.awareness.Awareness;
 import com.google.android.gms.awareness.SnapshotClient;
+import com.google.android.gms.awareness.fence.AwarenessFence;
 import com.google.android.gms.awareness.snapshot.PlacesResponse;
 import com.google.android.gms.awareness.snapshot.WeatherResponse;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-Button btnSnapshot;
+    Button btnSnapshot;
+    TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,7 @@ Button btnSnapshot;
         setTitle("AwarenessClass");
         Button btn = findViewById(R.id.btn_fence);
         btnSnapshot = findViewById(R.id.btn_snapshot);
+        textView = findViewById(R.id.textView);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,24 +44,7 @@ Button btnSnapshot;
                 startActivity(new Intent(getApplicationContext(),FenceActivity.class));
             }
         });
-        //Se o app não tiver acesso ao gps,
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String[] myPermissions = {Manifest.permission.ACCESS_FINE_LOCATION}; //pedir acesso ao gps
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                //Permissão para acessar a localização. (caixa de dialogo)
-                requestPermissions(myPermissions,123);
-            }
-        }
-        else{
-            //Inicie o snapshot
-
-            btnSnapshot.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startSnapshot();
-                }
-            });
-        }
+        btnSnapshot.setOnClickListener(this);
 
 
     }
@@ -67,12 +55,7 @@ Button btnSnapshot;
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 123){
             if(grantResults[0] == PERMISSION_GRANTED) {
-                btnSnapshot.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startSnapshot();
-                    }
-                });
+                Toast.makeText(this, "Permissoes de GPS concedidas.", Toast.LENGTH_SHORT).show();
             }
             else
                 Toast.makeText(this, "Aceite as permissoes.", Toast.LENGTH_SHORT).show();
@@ -90,11 +73,32 @@ Button btnSnapshot;
                 //mostrar a previsao do tempo no celular
                 String resp = weatherResponse.getWeather().toString();
                 Toast.makeText(MainActivity.this, resp, Toast.LENGTH_SHORT).show();
+                textView.setText(resp);
             }
         });
     }
-    private void startSnapshotHeadphone(){
-        //criem um snapshot de headphone!
+    private void startSnapshotPlaces(){
+        //criem um snapshot de Places!
         //olhem a colinha acima :)
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.btn_snapshot:
+                //Se o app não tiver acesso ao gps,
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    String[] myPermissions = {Manifest.permission.ACCESS_FINE_LOCATION}; //pedir acesso ao gps
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        //Permissão para acessar a localização. (caixa de dialogo)
+                        requestPermissions(myPermissions,123);
+                    }
+                }
+                else{
+                    //Inicie o snapshot
+                    startSnapshot();
+                }
+        }
     }
 }
